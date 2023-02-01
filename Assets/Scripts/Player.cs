@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 5;
-    private Rigidbody2D _rigidbody2D;
-    private Animator _animator;
+    public float speed = 5;//速度
+    private Rigidbody2D _rigidbody2D;//刚体
+    private Animator _animator;// 获得动画控制器（控制箭头之间的转换）
 
-    private float x;
+    private float x;//方向
     private float y;
     // Start is called before the first frame update
     void Start()
@@ -25,8 +25,8 @@ public class Player : MonoBehaviour
 
         if (x > 0)
         {
-            _rigidbody2D.transform.eulerAngles = new Vector3(0f,0f,0f);
-            _animator.SetBool("run",true);
+            _rigidbody2D.transform.eulerAngles = new Vector3(0f,0f,0f);// 控制人物按指定方向
+            _animator.SetBool("run",true);  // 触发箭头控件
         }
 
          if (x < 0)
@@ -45,12 +45,18 @@ public class Player : MonoBehaviour
         Run ();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision) // 当人物发生碰撞时触发该函数
     {
-        if (collision.gameObject.tag == "Spike")
+        if (collision.gameObject.tag == "Spike")  // 当与人物碰撞的物体的标签为Spike触发该函数
         {
-            GameController.Instance.ShowGameOverPanel();
+            GameController.Instance.ShowGameOverPanel(); // 调用自定义死亡的方法
             Destroy(gameObject); // 使得人物消失   
+        }
+        else if (collision.gameObject.tag == "Saw")
+        {
+            GameController.Instance.ShowGameOverPanel();        // 调用自定义死亡的方法
+            //gameObject.SetActive(false);
+            Destroy(gameObject);            // 使得人物消失   
         }
     }
 
